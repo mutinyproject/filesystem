@@ -1,0 +1,9 @@
+#
+# /etc/hosts - Static table of hosts.
+#
+# See hosts(5) for detailed documentation.
+#
+
+# <IP address>      <canonical hostname>    [aliases]
+127.0.0.1           localhost.domain        mutiny
+::1                 localhost.localdomain   mutiny

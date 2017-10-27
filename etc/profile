@@ -1,0 +1,5 @@
+#!/bin/sh
+
+umask 022
+
+PS1='$(id -un)@$(uname -n | cut -f1 -d.) ${PWD} $ '

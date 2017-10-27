@@ -1,0 +1,11 @@
+#
+# /etc/fstab - Static filesystem information.
+#
+# See fstab(5) for information on syntax, possible options, etc.
+#
+
+# <filesystem>  <mountpoint>    <type>      <options>           <dump>  <pass>
+/dev/boot       /boot           vfat        defaults,noatime    0       2
+/dev/root       /               ext4        defaults,noatime    0       1
+/dev/home       /home           ext4        defaults,noatime    0       2
+
