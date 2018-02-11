@@ -2,4 +2,11 @@
 
 umask 022
 
+# /host should always be a symlink pointing to the triplet, not absolute, nothing after
+# (e.g., /host -> "x86_64-unknown-linux-musl")
+CHOST=$(cd -P /host && echo ${PWD##*/})
+[ $? -eq 0 ] && export CHOST || unset CHOST
+
+export PATH="/${CHOST}/local/bin:/${CHOST}/bin"
+
 PS1='$(id -un)@$(uname -n | cut -f1 -d.) ${PWD} $ '
