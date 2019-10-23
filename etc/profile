@@ -9,4 +9,4 @@ CHOST=$(cd -P /host && echo ${PWD##*/})
 
 export PATH="/${CHOST}/local/bin:/${CHOST}/bin"
 
-PS1='$(id -un)@$(uname -n | cut -f1 -d.) ${PWD} $ '
+PS1='$(id -un)@$(hostname) ${PWD} $ '
