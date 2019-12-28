@@ -1,12 +1,11 @@
 #!/bin/sh
 
-if [ $# -ne 2 ];then
-    printf '%s <host triplet> <output directory>\n' "$0"
+if [ $# -ne 1 ];then
+    printf '%s <output directory>\n' "$0"
     exit 1
 fi
 
 SRCDIR=$(dirname $(readlink -f ${0}))
-CHOST="${1}"; shift
 IMAGE="${1}"; shift
 
 export PATH="${SRCDIR}/scripts:${PATH}"
@@ -54,58 +53,15 @@ file() {
     done
 }
 
-dir 0755 /
-dir 0755 /boot
-dir 0755 /dev
-dir 0755 /etc
-dir 0755 /home
-dir 0755 /local
-dir 0755 /local/share
-dir 0755 /mnt
-dir 0755 /proc
-dir 0755 /run
-dir 0755 /run/tmp
-dir 0755 /share
-dir 0755 /src
-dir 0755 /sys
-dir 0755 /var
-dir 0755 /var/cache
-dir 0755 /var/log
-dir 0755 /var/lib
-dir 0755 /var/spool
-dir 0755 /var/tmp
-dir 0755 /${CHOST}
-symlink_dir ${CHOST} /host
-dir 0755 /${CHOST}/bin
-symlink_dir bin /${CHOST}/sbin
-dir 0755 /${CHOST}/include
-dir 0755 /${CHOST}/lib
-dir 0755 /${CHOST}/local
-dir 0755 /${CHOST}/local/bin
-symlink_dir bin /${CHOST}/local/sbin
-dir 0755 /${CHOST}/local/include
-dir 0755 /${CHOST}/local/lib
+dir bin dev etc home include lib
+file local local/{bin,include,lib,share}
+file mnt proc run share srv sys
+file var var/{cache,lib,log,tmp}
 
-case "${CHOST}" in
-    x86_64-*)
-        symlink_dir host/lib /lib64
-        symlink_dir lib /${CHOST}/lib64
-        symlink_dir lib /${CHOST}/local/lib64
-    ;;
-esac
-
-symlink_dir host/bin /bin
-symlink_dir host/include /include
-symlink_dir host/lib /lib
-symlink_dir ../host/local/bin /local/bin
-symlink_dir ../host/local/include /local/include
-symlink_dir ../host/local/lib /local/lib
-symlink_dir ../host/local/sbin /local/sbin
-symlink_dir mnt /media
-symlink_dir host/sbin /sbin
-symlink_dir run/tmp /tmp
-symlink_dir . /usr
-symlink_dir ../run /var/run
+symlink_dir bin sbin
+symlink_dir run/tmp tmp
+symlink_dir . usr
+symlink_dir ../run var/run
 
 file 0644   \
     /etc/fstab      \
