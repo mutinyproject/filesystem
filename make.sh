@@ -1,9 +1,5 @@
 #!/bin/sh
 
-# yo try dealing with directory creation and symlink management in make(1) someday
-#           it'll be fun
-#                                                       --some fool, 2016
-
 if [ $# -ne 2 ];then
     printf '%s <host triplet> <output directory>\n' "$0"
     exit 1
