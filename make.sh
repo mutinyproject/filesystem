@@ -119,8 +119,6 @@ file 0644   \
     /etc/issue      \
     /etc/passwd     \
     /etc/profile    \
-    /etc/protocols  \
-    /etc/services   \
     /etc/shells
 file 0600 /etc/shadow
 
