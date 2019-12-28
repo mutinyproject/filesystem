@@ -124,6 +124,3 @@ file 0644   \
     /etc/shells
 file 0600 /etc/shadow
 
-file --mkdir 0644   \
-    /lib/sysctl.d/01-kspp-recommendations.conf
-
