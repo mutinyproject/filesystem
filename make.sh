@@ -58,6 +58,7 @@ file() {
 dir 0755 bin dev etc home include lib
 dir 0755 local local/{bin,include,lib,share}
 dir 0755 mnt proc run share srv sys
+dir 1777 run/tmp # sticky bit
 dir 0755 var var/{cache,lib,log,tmp}
 
 symlink_dir bin sbin
