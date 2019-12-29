@@ -77,3 +77,5 @@ file 0644   \
     /etc/shells
 file 0600 /etc/shadow
 
+file 0644   \
+    /lib/os-release
