@@ -1,6 +1,6 @@
 #!/bin/sh
 
-umask 022
+umask u=rwx,g=rx,o=rx
 
 export PATH="/local/bin:/bin"
 
