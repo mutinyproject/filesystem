@@ -1,0 +1,116 @@
+= hier(7)
+
+== Name
+
+hier - overview of the filesystem layout
+
+== Description
+
+On Mutiny, a filesystem layout is used that attempts to both preserve relative compatibility with
+the *Filesystem Hierarchy Standard*, while also making it a priority to reduce cruft, legacy, and
+other unnecessary redundancy where possible.
+
+=== Hierarchy
+
+:pp: ++
+
+:fn-devtmpfs: footnote:[devtmpfs does not currently have a manual page, and documentation of it \
+                        in the kernel is slim. See CONFIG_DEVTMPFS and CONFIG_DEVTMPFS_MOUNT in \
+                        the kernel configuration to see descriptions of what it does.]
+The following is a sketch of the filesystem hierarchy.
+
+[horizontal]
+_/_::
+    The root of the filesystem. From here, all flows forth. This is additionally the root user's
+    home directory.
+
+    _/boot_:::
+        Files used during the boot process, such as boot loader configuration, kernel executables,
+        initramfs archives, and so on. If running on an EFI-enabled system, this whole directory
+        should be mounted on an EFI partition.
+
+    _/bin_:::
+        Binaries installed on the system by the package manager, praxis(7), or through some other
+        system-managed method.
+
+    _/dev_:::
+        Device files. This structure is first populated by devtmpfs{fn-devtmpfs} at boot, and then
+        after boot, managed by mdevd(8).
+
+    _/etc_:::
+        System configuration. This directory is first populated by tendency-config-populate(1).
+
+        _ksh/_::::   Files relating to ksh(1).
+
+            * _rc_ - Startup file for ksh(1), sourced by _/etc/profile_. See profile(7).
+
+        _fstab_::::     **F**ile**s**ystem **t**able. It is for specifying what filesystems can be
+                        mounted, and it's used by commune-init(8) and mount(8) to mount your
+                        filesystems at boot. See fstab(5).
+
+        _group_::::     A list of groups on the system. See group(5).
+
+        _hosts_::::     A table of IP addresses associated with hostnames. See hosts(5).
+
+        _issue_::::     A file containing the message shown prior to the login prompt, printed by
+                        getty(8).
+
+        _passwd_::::    A list of user accounts on the system. This should be readable by all
+                        users. See passwd(5).
+
+        _profile_::::   A sh(1) script ran for login shells. See profile(7).
+
+        _shadow_::::    A "shadowed" passwd file: that is to say, it contains encrypted passwords,
+                        while */etc/passwd* does not. Fittingly, it should not be readable by
+                        anyone except root. See shadow(5).
+
+        _shells_::::    A list of the shells a user can have as their login shell. See shells(5).
+
+    _/home_:::
+        Non-system users' home directories. Usually all non-system users will have a directory
+        under this one as their home directory.
+
+    _/include_:::
+        Header files for C and C++ libraries installed by the package manager, praxis(7), or
+        through some other system-managed method, used by their respective compilers, cc(1) and
+        c{pp}(1).
+
+    _/lib_::
+        Libraries and other non-user-facing executables installed by the package manager, praxis(7),
+        or through some other system-managed method.
+
+        _os-release_:::: 
+
+----
+│   ├── hostname
+├── lib
+│   └── os-release
+├── local
+│   ├── bin
+│   ├── include
+│   ├── lib
+│   └── share
+├── mnt
+├── proc
+├── run
+│   └── tmp
+├── sbin -> bin
+├── share
+├── srv
+├── sys
+├── tmp -> run/tmp
+├── usr -> .
+└── var
+    ├── cache
+    ├── lib
+    ├── log
+    ├── run -> ../run
+    └── tmp
+----
+
+== See also
+
+https://www.freedesktop.org/software/systemd/man/file-hierarchy.html[systemd's file-hierarchy(7)]
+
+https://www.pathname.com/fhs/[The Filesystem Hierarchy Standard]
+
