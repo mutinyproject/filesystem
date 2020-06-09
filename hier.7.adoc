@@ -79,7 +79,8 @@ _/_::
         Libraries and other non-user-facing executables installed by the package manager, praxis(7),
         or through some other system-managed method.
 
-        _os-release_:::: 
+
+TODO(somasis): document the following
 
 ----
 │   ├── hostname
