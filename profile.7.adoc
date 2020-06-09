@@ -42,7 +42,7 @@ Lastly, if it is an interactive login shell, both sets are read in the order the
 
 === Purpose
 
-
+TODO(somasis): describe what all the disparate files actually do
 
 == Glossary
 
