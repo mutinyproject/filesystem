@@ -2,8 +2,5 @@
 # /etc/shells - Paths of all valid login shells(5).
 #
 
-/bin/bash
-/bin/fish
-/bin/mksh
+/bin/ksh
 /bin/sh
-/bin/zsh
