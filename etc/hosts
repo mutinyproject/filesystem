@@ -5,5 +5,5 @@
 #
 
 # <IP address>      <canonical hostname>    [aliases]
-127.0.0.1           localhost.domain        mutiny
-::1                 localhost.localdomain   mutiny
+127.0.0.1           mutiny.local            mutiny localhost
+::1                 mutiny.local            mutiny localhost
