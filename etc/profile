@@ -1,7 +1,31 @@
 #!/bin/sh
+# profile - a sh(1) script sourced by login shells. See profile(7).
 
-umask u=rwx,g=rx,o=rx
+echo sourcing /etc/profile... >&2
+
+umask 022
 
 export PATH="/local/bin:/bin"
 
-PS1='$(id -un)@$(hostname) ${PWD} $ '
+for f in /share/profile.d/*.sh; do
+    [ -f "${f}" ] && . "${f}"
+done
+unset f
+
+case "${0}" in
+    ksh|-ksh) [ -f /etc/ksh/profile ] && . /etc/ksh/profile ;;
+    sh|-sh)   [ -f /etc/sh/profile ] && . /etc/sh/profile ;;
+esac
+
+# Everything following this case statement is for interactive shells only.
+case "$-" in
+    *i*) : ;;
+    *) return ;;
+esac
+
+PS1='$(id -un)@$(hostname) ${PWD} '
+case "$(id -u)" in
+    0) PS1="${PS1} # " ;;
+    *) PS1="${PS1} $ " ;;
+esac
+

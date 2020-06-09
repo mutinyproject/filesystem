@@ -1,0 +1,14 @@
+#!/bin/ksh
+# ksh/profile - See ksh(1) and xdg(7) for details on variables set here.
+#
+# See profile(7) for further details.
+
+echo sourcing /etc/ksh/profile... >&2
+
+mkdir -p "${XDG_CACHE_HOME}"/ksh >/dev/null 2>&1 && HISTFILE="${XDG_CACHE_HOME}"/ksh/history
+HISTCONTROL=ignorespace
+HISTSIZE=10000
+
+[ -f "${XDG_CONFIG_HOME}"/ksh/rc ] && export ENV="${XDG_CONFIG_HOME}"/ksh/rc
+[ -f "${HOME}/.kshrc" ] && export ENV="${HOME}"/.kshrc
+

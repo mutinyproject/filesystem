@@ -1,0 +1,14 @@
+#!/bin/sh
+# sh/profile - See sh(1) and xdg(7) for details on variables set here.
+#
+# See profile(7) for further details.
+
+echo sourcing /etc/sh/profile... >&2
+
+mkdir -p "${XDG_CACHE_HOME}"/sh >/dev/null 2>&1 && HISTFILE="${XDG_CACHE_HOME}"/sh/history
+HISTCONTROL=ignorespace
+HISTSIZE=10000
+
+[ -f "${XDG_CONFIG_HOME}"/sh/rc ] && export ENV="${XDG_CONFIG_HOME}"/sh/rc
+[ -f "${HOME}/.shrc" ] && export ENV="${HOME}"/.shrc
+
