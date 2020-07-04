@@ -90,7 +90,7 @@ DESCRIPTION
            package manager, praxis(7), or through some other system-managed
            method.
 
-           os-release
+       TODO(somasis): document the following
 
            │   ├── hostname
            ├── lib
@@ -130,4 +130,4 @@ NOTES
 
 
 
-Mutiny                            2020-06-08                           HIER(7)
+Mutiny                            2020-06-09                           HIER(7)
