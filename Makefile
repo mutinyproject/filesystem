@@ -42,7 +42,7 @@ all: man
 
 dev: all html README
 
-clean:
+clean: FRC
 	rm -f ${HTMLS} ${MANS}
 
 man: FRC ${MANS}
@@ -59,11 +59,11 @@ html: FRC ${HTMLS}
 README: hier.7
 	man ./$< | col -bx > $@
 
-install-html: html
+install-html: FRC html
 	install -d ${DESTDIR}${htmldir}
 	for html in ${HTMLS}; do install -m0644 $${html} ${DESTDIR}${htmldir}; done
 
-install: all
+install: FRC all
 	# Basic filesystem hierarchy. See hier(7).
 	# Indent for each sub-directory, for readability.
 	mkdir -p -m 0755 \
@@ -117,3 +117,5 @@ install: all
 	for file in ${MANS}; do \
 	    install -m0644 $${file} ${DESTDIR}/share/man/man$${file##*.}/$${file}; \
 	done
+
+FRC:
