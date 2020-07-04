@@ -53,10 +53,10 @@ html: FRC ${HTMLS}
 
 .SUFFIXES: .adoc .html
 .adoc.html: footer.adoc
-	${ASCIIDOCTOR} ${ASCIIDOCTOR_FLAGS} -b html5 -o $@ $<
+	${ASCIIDOCTOR} -b html5 ${ASCIIDOCTOR_FLAGS} -o $@ $<
 
 .adoc: footer.adoc
-	${ASCIIDOCTOR} ${ASCIIDOCTOR_FLAGS} -b manpage -d manpage -o $@ $<
+	${ASCIIDOCTOR} -b manpage -d manpage ${ASCIIDOCTOR_FLAGS} -o $@ $<
 
 .DELETE_ON_ERROR: README
 README: hier.7
