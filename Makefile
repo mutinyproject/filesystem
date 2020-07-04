@@ -52,8 +52,8 @@ html: FRC ${HTMLS}
 .adoc.html:
 	${ASCIIDOCTOR} ${ASCIIDOCTOR_FLAGS} -b html5 -o $@ $<
 
-%.7: %.7.adoc
-	${ASCIIDOCTOR} -b manpage -d manpage -o $@ $<
+.adoc:
+	${ASCIIDOCTOR} ${ASCIIDOCTOR_FLAGS} -b manpage -d manpage -o $@ $<
 
 .DELETE_ON_ERROR: README
 README: hier.7
