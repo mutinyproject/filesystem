@@ -52,10 +52,10 @@ man: FRC ${MANS}
 html: FRC ${HTMLS}
 
 .SUFFIXES: .adoc .html
-.adoc.html:
+.adoc.html: footer.adoc
 	${ASCIIDOCTOR} ${ASCIIDOCTOR_FLAGS} -b html5 -o $@ $<
 
-.adoc:
+.adoc: footer.adoc
 	${ASCIIDOCTOR} ${ASCIIDOCTOR_FLAGS} -b manpage -d manpage -o $@ $<
 
 .DELETE_ON_ERROR: README
