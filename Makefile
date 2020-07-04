@@ -10,9 +10,12 @@ htmldir ?= ${docdir}
 DESTDIR ?= /
 
 ASCIIDOCTOR ?= asciidoctor
+
 ASCIIDOCTOR_FLAGS += --failure-level=WARNING
 ASCIIDOCTOR_FLAGS += -a manmanual="Mutineer's Guide"
 ASCIIDOCTOR_FLAGS += -a mansource="Mutiny"
+
+-include config.mk
 
 FILES_644 = \
     etc/fstab \
