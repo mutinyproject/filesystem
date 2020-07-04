@@ -1,9 +1,18 @@
+name = filesystem
+version = 0
+
+prefix ?= /usr/local
+datarootdir ?= ${prefix}/share
+datadir ?= ${datarootdir}
+docdir ?= ${datadir}/doc/${name}
+htmldir ?= ${docdir}
+
 DESTDIR ?= /
 
 ASCIIDOCTOR ?= asciidoctor
-ASCIIDOCTOR += --failure-level=WARNING
-ASCIIDOCTOR += -a manmanual="Mutineer's Guide"
-ASCIIDOCTOR += -a mansource="Mutiny"
+ASCIIDOCTOR_FLAGS += --failure-level=WARNING
+ASCIIDOCTOR_FLAGS += -a manmanual="Mutineer's Guide"
+ASCIIDOCTOR_FLAGS += -a mansource="Mutiny"
 
 FILES_644 = \
     etc/fstab \
@@ -36,11 +45,12 @@ dev: all html README
 clean:
 	rm -f ${HTMLS} ${MANS}
 
-man: ${MANS}
-html: ${HTMLS}
+man: FRC ${MANS}
+html: FRC ${HTMLS}
 
-%.html: %.adoc
-	${ASCIIDOCTOR} -b html5 -o $@ $<
+.SUFFIXES: .adoc .html
+.adoc.html:
+	${ASCIIDOCTOR} ${ASCIIDOCTOR_FLAGS} -b html5 -o $@ $<
 
 %.7: %.7.adoc
 	${ASCIIDOCTOR} -b manpage -d manpage -o $@ $<
@@ -48,6 +58,10 @@ html: ${HTMLS}
 .DELETE_ON_ERROR: README
 README: hier.7
 	man ./$< | col -bx > $@
+
+install-html: html
+	install -d ${DESTDIR}${htmldir}
+	for html in ${HTMLS}; do install -m0644 $${html} ${DESTDIR}${htmldir}; done
 
 install: all
 	# Basic filesystem hierarchy. See hier(7).

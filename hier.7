@@ -1,0 +1,188 @@
+'\" t
+.\"     Title: hier
+.\"    Author: [see the "AUTHOR(S)" section]
+.\" Generator: Asciidoctor 2.0.10
+.\"      Date: 2020-06-09
+.\"    Manual: Mutineer's Guide
+.\"    Source: Mutiny
+.\"  Language: English
+.\"
+.TH "HIER" "7" "2020-06-09" "Mutiny" "Mutineer\(aqs Guide"
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.ss \n[.ss] 0
+.nh
+.ad l
+.de URL
+\fI\\$2\fP <\\$1>\\$3
+..
+.als MTO URL
+.if \n[.g] \{\
+.  mso www.tmac
+.  am URL
+.    ad l
+.  .
+.  am MTO
+.    ad l
+.  .
+.  LINKSTYLE blue R < >
+.\}
+.SH "NAME"
+hier \- overview of the filesystem layout
+.SH "DESCRIPTION"
+.sp
+On Mutiny, a filesystem layout is used that attempts to both preserve relative compatibility with
+the \fBFilesystem Hierarchy Standard\fP, while also making it a priority to reduce cruft, legacy, and
+other unnecessary redundancy where possible.
+.SS "Hierarchy"
+.sp
+The following is a sketch of the filesystem hierarchy.
+.sp
+\fI/\fP
+.RS 4
+The root of the filesystem. From here, all flows forth. This is additionally the root user\(cqs
+home directory.
+.sp
+\fI/boot\fP
+.RS 4
+Files used during the boot process, such as boot loader configuration, kernel executables,
+initramfs archives, and so on. If running on an EFI\-enabled system, this whole directory
+should be mounted on an EFI partition.
+.RE
+.sp
+\fI/bin\fP
+.RS 4
+Binaries installed on the system by the package manager, praxis(7), or through some other
+system\-managed method.
+.RE
+.sp
+\fI/dev\fP
+.RS 4
+Device files. This structure is first populated by devtmpfs[1] at boot, and then
+after boot, managed by mdevd(8).
+.RE
+.sp
+\fI/etc\fP
+.RS 4
+System configuration. This directory is first populated by tendency\-config\-populate(1).
+.sp
+\fIksh/\fP
+.RS 4
+Files relating to ksh(1).
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.  sp -1
+.  IP \(bu 2.3
+.\}
+\fIrc\fP \- Startup file for ksh(1), sourced by \fI/etc/profile\fP. See profile(7).
+.RE
+.RE
+.sp
+\fIfstab\fP
+.RS 4
+\fBF\fPile\fBs\fPystem \fBt\fPable. It is for specifying what filesystems can be
+mounted, and it\(cqs used by commune\-init(8) and mount(8) to mount your
+filesystems at boot. See fstab(5).
+.RE
+.sp
+\fIgroup\fP
+.RS 4
+A list of groups on the system. See group(5).
+.RE
+.sp
+\fIhosts\fP
+.RS 4
+A table of IP addresses associated with hostnames. See hosts(5).
+.RE
+.sp
+\fIissue\fP
+.RS 4
+A file containing the message shown prior to the login prompt, printed by
+getty(8).
+.RE
+.sp
+\fIpasswd\fP
+.RS 4
+A list of user accounts on the system. This should be readable by all
+users. See passwd(5).
+.RE
+.sp
+\fIprofile\fP
+.RS 4
+A sh(1) script ran for login shells. See profile(7).
+.RE
+.sp
+\fIshadow\fP
+.RS 4
+A "shadowed" passwd file: that is to say, it contains encrypted passwords,
+while \fB/etc/passwd\fP does not. Fittingly, it should not be readable by
+anyone except root. See shadow(5).
+.RE
+.sp
+\fIshells\fP
+.RS 4
+A list of the shells a user can have as their login shell. See shells(5).
+.RE
+.RE
+.sp
+\fI/home\fP
+.RS 4
+Non\-system users\(aq home directories. Usually all non\-system users will have a directory
+under this one as their home directory.
+.RE
+.sp
+\fI/include\fP
+.RS 4
+Header files for C and C++ libraries installed by the package manager, praxis(7), or
+through some other system\-managed method, used by their respective compilers, cc(1) and
+c++(1).
+.RE
+.RE
+.sp
+\fI/lib\fP
+.RS 4
+Libraries and other non\-user\-facing executables installed by the package manager, praxis(7),
+or through some other system\-managed method.
+.RE
+.sp
+TODO(somasis): document the following
+.sp
+.if n .RS 4
+.nf
+│   ├── hostname
+├── lib
+│   └── os\-release
+├── local
+│   ├── bin
+│   ├── include
+│   ├── lib
+│   └── share
+├── mnt
+├── proc
+├── run
+│   └── tmp
+├── sbin \-> bin
+├── share
+├── srv
+├── sys
+├── tmp \-> run/tmp
+├── usr \-> .
+└── var
+    ├── cache
+    ├── lib
+    ├── log
+    ├── run \-> ../run
+    └── tmp
+.fi
+.if n .RE
+.SH "SEE ALSO"
+.sp
+.URL "https://www.freedesktop.org/software/systemd/man/file\-hierarchy.html" "systemd\(cqs file\-hierarchy(7)" ""
+.sp
+.URL "https://www.pathname.com/fhs/" "The Filesystem Hierarchy Standard" ""
+.SH "NOTES"
+1. devtmpfs does not currently have a manual page, and documentation of it in the kernel is slim. See CONFIG_DEVTMPFS and CONFIG_DEVTMPFS_MOUNT in the kernel configuration to see descriptions of what it does.
