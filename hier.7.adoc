@@ -68,8 +68,9 @@ _/_::
         _shells_::::    A list of the shells a user can have as their login shell. See shells(5).
 
     _/home_:::
-        Non-system users' home directories. Usually all non-system users will have a directory
-        under this one as their home directory.
+        Non-system users' home directories. There's no specified directory structure within this
+        directory, but usually all non-system users will have a directory under this one as their
+        home directory.
 
     _/include_:::
         Header files for C and C++ libraries installed by the package manager,
