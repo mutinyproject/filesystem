@@ -20,7 +20,6 @@ other unnecessary redundancy where possible.
 
 The following is a sketch of the filesystem hierarchy.
 
-[horizontal]
 _/_::
     The root of the filesystem. From here, all flows forth. This is additionally the root user's
     home directory.
