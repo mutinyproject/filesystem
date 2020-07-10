@@ -17,6 +17,7 @@ other unnecessary redundancy where possible.
 :fn-devtmpfs: footnote:[devtmpfs does not currently have a manual page, and documentation of it \
                         in the kernel is slim. See CONFIG_DEVTMPFS and CONFIG_DEVTMPFS_MOUNT in \
                         the kernel configuration to see descriptions of what it does.]
+
 The following is a sketch of the filesystem hierarchy.
 
 [horizontal]
