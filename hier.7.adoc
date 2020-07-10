@@ -31,8 +31,8 @@ _/_::
         should be mounted on an EFI partition.
 
     _/bin_:::
-        Binaries installed on the system by the package manager, praxis(7), or through some other
-        system-managed method.
+        Binaries installed on the system by the package manager, <<praxis.7.adoc#,praxis(7)>>, or
+        through some other system-managed method.
 
     _/dev_:::
         Device files. This structure is first populated by devtmpfs{fn-devtmpfs} at boot, and then
@@ -72,9 +72,9 @@ _/_::
         under this one as their home directory.
 
     _/include_:::
-        Header files for C and C++ libraries installed by the package manager, praxis(7), or
-        through some other system-managed method, used by their respective compilers, cc(1) and
-        c{pp}(1).
+        Header files for C and C++ libraries installed by the package manager,
+        <<praxis.7.adoc#,praxis(7)>>, or through some other system-managed method, used by their
+        respective compilers, cc(1) and c{pp}(1).
 
     _/lib_::
         Libraries and other non-user-facing executables installed by the package manager, praxis(7),
