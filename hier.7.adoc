@@ -81,35 +81,56 @@ _/_::
         Libraries and other non-user-facing executables installed by the package manager, praxis(7),
         or through some other system-managed method.
 
+        _os-release_::::    File containing metadata about the installed OS.
 
-TODO(somasis): document the following
+    _/local_::
+        System administrator-managed prefix. Everything under /local is effectively free reign for
+        the user to add things without them being touched by any system management things;
+        <<praxis.7.adoc#,praxis(7)>> never install anything within here.
 
-----
-│   ├── hostname
-├── lib
-│   └── os-release
-├── local
-│   ├── bin
-│   ├── include
-│   ├── lib
-│   └── share
-├── mnt
-├── proc
-├── run
-│   └── tmp
-├── sbin -> bin
-├── share
-├── srv
-├── sys
-├── tmp -> run/tmp
-├── usr -> .
-└── var
-    ├── cache
-    ├── lib
-    ├── log
-    ├── run -> ../run
-    └── tmp
-----
+    _/mnt_::
+        Mounted filesystems. They may or may not be filesystems mounted from hotpluggable devices.
+        There's no specified directory structure within here.
+
+    _/proc_::
+        The mountpoint of a pseudo-filesystem that provides a filesystem interface for some data in
+        the kernel. Most notably, it contains a folder for each process ID on the system.
+        See proc(5) for more details.
+
+// TODO(somasis): Document the following:
+// ----
+// ├── run                     - Runtime files. (tmpfs, directory structure created at boot)
+// │   ├── tmp                 - Temporary files. (cleared at boot)
+// │   └── user                - User runtime files.
+// │       └── 1000            - User's `$XDG_RUNTIME_DIR`. (created at login)
+// │           └── commune     - User's supervision trees, maintained by `commune` scopes.
+// │               ├── snooze  - Corresponds to the running supervision tree for user's jobs.
+// │               │             Maintained by `commune-snooze`.
+// │               ├── user    - Corresponds to the running supervision tree for the user.
+// │               │             Maintained by `commune-user`.
+// │               └── xinit   - Corresponds to the running supervision tree for the user's Xorg
+// │                             session. Maintained by `commune-xinit`.
+// │
+// ├── share                   - Managed resource files.
+// │   └── man                 - System manual pages.
+// │
+// ├── srv                     - Service directories. (git-daemon, httpd)
+// │   ├── git
+// │   └── http
+// │
+// ├── sys                     - System/kernel information. (sysfs)
+// ├── tmp                     - Symbolic link to `run/tmp`.
+// ├── usr                     - Symbolic link to `.`.
+// └── var                     - Persistent system data.
+//     ├── cache               - Cache for system programs.
+//     │   └── praxis
+//     │       └── distfiles   - Downloaded source for packages.
+//     │
+//     ├── lib                 - Log files for system programs.
+//     ├── log                 - Databases and other data for system programs.
+//     ├── run                 - Symbolic link to `../run`.
+//     └── tmp                 - Persistent yet temporary files, not cleared at boot.
+// ----
 
 == See also
 
