@@ -44,7 +44,7 @@ _/_::
 
             * _rc_ - Startup file for ksh(1), sourced by _/etc/profile_. See profile(7).
 
-        _fstab_::::     **F**ile**s**ystem **t**able. It is for specifying what filesystems can be
+        _fstab_::::     **F**ile**s**ystem **tab**le. It is for specifying what filesystems can be
                         mounted, and it's used by commune-init(8) and mount(8) to mount your
                         filesystems at boot. See fstab(5).
 
@@ -61,7 +61,7 @@ _/_::
         _profile_::::   A sh(1) script ran for login shells. See profile(7).
 
         _shadow_::::    A "shadowed" passwd file: that is to say, it contains encrypted passwords,
-                        while */etc/passwd* does not. Fittingly, it should not be readable by
+                        while _/etc/passwd_ does not. Fittingly, it should not be readable by
                         anyone except root. See shadow(5).
 
         _shells_::::    A list of the shells a user can have as their login shell. See shells(5).
