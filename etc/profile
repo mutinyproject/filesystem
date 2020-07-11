@@ -23,9 +23,11 @@ case "$-" in
     *) return ;;
 esac
 
-PS1='$(id -un)@$(hostname) ${PWD} '
-case "$(id -u)" in
-    0) PS1="${PS1} # " ;;
-    *) PS1="${PS1} $ " ;;
-esac
+if [ -z "${PS1}" ]; then
+    PS1='$(id -un)@$(hostname) ${PWD} '
+    case "$(id -u)" in
+        0) PS1="${PS1} # " ;;
+        *) PS1="${PS1} $ " ;;
+    esac
+fi
 
