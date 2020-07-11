@@ -2,12 +2,12 @@
 .\"     Title: hier
 .\"    Author: [see the "AUTHOR(S)" section]
 .\" Generator: Asciidoctor 2.0.10
-.\"      Date: 2020-06-09
+.\"      Date: 2020-07-11
 .\"    Manual: Mutineer's Guide
 .\"    Source: Mutiny
 .\"  Language: English
 .\"
-.TH "HIER" "7" "2020-06-09" "Mutiny" "Mutineer\(aqs Guide"
+.TH "HIER" "7" "2020-07-11" "Mutiny" "Mutineer\(aqs Guide"
 .ie \n(.g .ds Aq \(aq
 .el       .ds Aq '
 .ss \n[.ss] 0
@@ -52,8 +52,8 @@ should be mounted on an EFI partition.
 .sp
 \fI/bin\fP
 .RS 4
-Binaries installed on the system by the package manager, praxis(7), or through some other
-system\-managed method.
+Binaries installed on the system by the package manager, praxis(7), or
+through some other system\-managed method.
 .RE
 .sp
 \fI/dev\fP
@@ -131,58 +131,188 @@ A list of the shells a user can have as their login shell. See shells(5).
 .sp
 \fI/home\fP
 .RS 4
-Non\-system users\(aq home directories. Usually all non\-system users will have a directory
-under this one as their home directory.
+Non\-system users\(aq home directories. There\(cqs no specified directory structure within this
+directory, but usually all non\-system users will have a directory under this one as their
+home directory.
 .RE
 .sp
 \fI/include\fP
 .RS 4
-Header files for C and C++ libraries installed by the package manager, praxis(7), or
-through some other system\-managed method, used by their respective compilers, cc(1) and
-c++(1).
-.RE
+Header files for C and C++ libraries installed by the package manager,
+praxis(7), or through some other system\-managed method, used by their
+respective compilers, cc(1) and c++(1).
 .RE
 .sp
 \fI/lib\fP
 .RS 4
 Libraries and other non\-user\-facing executables installed by the package manager, praxis(7),
 or through some other system\-managed method.
+.sp
+\fIos\-release\fP
+.RS 4
+File containing metadata about the installed OS.
+.RE
 .RE
 .sp
-TODO(somasis): document the following
+\fI/local\fP
+.RS 4
+System administrator\-managed prefix. Everything under /local is effectively free reign for
+the user to add things without them being touched by any system management things;
+praxis(7) never install anything within here.
+.RE
 .sp
-.if n .RS 4
-.nf
-│   ├── hostname
-├── lib
-│   └── os\-release
-├── local
-│   ├── bin
-│   ├── include
-│   ├── lib
-│   └── share
-├── mnt
-├── proc
-├── run
-│   └── tmp
-├── sbin \-> bin
-├── share
-├── srv
-├── sys
-├── tmp \-> run/tmp
-├── usr \-> .
-└── var
-    ├── cache
-    ├── lib
-    ├── log
-    ├── run \-> ../run
-    └── tmp
-.fi
-.if n .RE
+\fI/mnt\fP
+.RS 4
+Mounted filesystems. They may or may not be filesystems mounted from hotpluggable devices.
+There\(cqs no specified directory structure within here.
+.RE
+.sp
+\fI/proc\fP
+.RS 4
+The mountpoint of a pseudo\-filesystem that provides a filesystem interface to \fIsome\fP data in
+the kernel. Most notably, it contains a folder for each process ID on the system.
+See proc(5) for more details.
+.RE
+.sp
+\fI/run\fP
+.RS 4
+Runtime files. That is, files that pertain to the system since it booted up, in some way;
+they hold no permanance and are never backed by an actual persistent storage.
+It is mounted as a tmpfs(5) filesystem, and exists only in RAM.
+.sp
+\fItmp\fP
+.RS 4
+Various temporary files. This is also mounted as a secondary tmpfs(5).
+The contents of this directory is visible to all users of the system.
+.RE
+.sp
+\fIuser\fP
+.RS 4
+User\-specific runtime files.
+.sp
+\fI<UID>\fP:
+.RS 4
+Runtime files which are controlled by the user ID \fIUID\fP.
+Each directory is created when the user logs in\(emsee login(7).
+This directory is marked read/write/execute only for the owner.
+.RE
+.RE
+.RE
+.RE
+.sp
+\fI/share\fP
+.RS 4
+Resources of various types, installed on the system by the package manager,
+praxis(7), or through some other system\-managed method.
+.sp
+\fIman\fP
+.RS 4
+System man(1) pages.
+\f(CRman*\fP directories under this correspond to manual sections.
+.RE
+.RE
+.sp
+\fI/srv\fP
+.RS 4
+Data served by the system. Most commonly, data served by daemons running on the system,
+like an HTTP daemon, git\-daemon(1), and so on.
+.RE
+.sp
+\fI/sys\fP
+.RS 4
+The mountpoint of a pseudo\-filesystem that provides a filesystem interface to kernel data
+structures. See sysfs(5).
+.RE
+.sp
+\fI/var\fP
+.RS 4
+Persistent, mutable system data. Data that system programs might need sooner or later, and
+that might change over multiple boots of the system. Things like databases, logs, caches.
+.sp
+\fIcache\fP
+.RS 4
+Cache files.
+.RE
+.sp
+\fIlib\fP
+.RS 4
+Databases and state files.
+.RE
+.sp
+\fIlog\fP
+.RS 4
+Log files.
+.RE
+.sp
+\fItmp\fP
+.RS 4
+Persistent, yet temporary files. It persists across boots, in contrast
+to \fI/run/tmp\fP.
+.RE
+.RE
+.SS "Symbolic links"
+.sp
+A few symbolic links are used in the file hierarchy so as to facilitate compatibilty with some
+usually\-common locations that Mutiny does not use.
+.sp
+\fI/sbin\fP
+.RS 4
+A symbolic link to "\fIbin\fP". Mutiny merges a lot of (nowadays) redundant directories.
+This one is from the era of Unix when \fI/bin\fP and \fI/sbin\fP were kept separate.
+.RE
+.sp
+\fI/tmp\fP
+.RS 4
+A symbolic link to "\fIrun/tmp\fP", so as not to disturb applications that expect this to be the
+temporary filesystem.
+.RE
+.sp
+\fI/usr\fP
+.RS 4
+A symbolic link to "\fI.\fP" (dot). Mutiny merges a lot of (nowadays) redundant directories.
+This one is from the era of Unix when \fI/usr/bin\fP and \fI/bin\fP were kept separate.
+.RE
+.sp
+\fI/var/run\fP
+.RS 4
+A symbolic link to "\fI../run\fP". This is a location that has been used in the past for runtime
+data, in version 2.3 of the Filesystem Hierarchy Standard. In version 3.0, it was deprecated in
+favor of \fI/run\fP, but suggests a symbolic link be made.
+.RE
 .SH "SEE ALSO"
 .sp
-.URL "https://www.freedesktop.org/software/systemd/man/file\-hierarchy.html" "systemd\(cqs file\-hierarchy(7)" ""
+.URL "https://www.freedesktop.org/software/systemd/man/file\-hierarchy.html" "file\-hierarchy(7)" ""
 .sp
-.URL "https://www.pathname.com/fhs/" "The Filesystem Hierarchy Standard" ""
+Filesystem Hierarchy Standard Group, \c
+.URL "https://refspecs.linuxfoundation.org/FHS_2.3/fhs\-2.3.html" "\fIThe Filesystem Hierarchy Standard, version 2.3\fP" ","
+January 29, 2004.
+.sp
+LSB Workgroup, The Linux Foundation, \c
+.URL "https://refspecs.linuxfoundation.org/FHS_3.0/fhs\-3.0.html" "\fIThe Filesystem Hierarchy Standard, version 3.0\fP" ","
+June 3, 2015.
+.sp
+Rob Landley, \c
+.URL "http://lists.busybox.net/pipermail/busybox/2010\-December/074114.html" "\fIUnderstanding the bin, sbin, usr/bin, usr/sbin Split\fP" ","
+December 9, 2010.
+.SH "CONTRIBUTING"
+.sp
+The canonical URL of this repository is \c
+.URL "https://git.mutiny.red/mutiny/filesystem" "" "."
+Submit patches and bugs to <\c
+.MTO "kylie\(atsomas.is" "" ">."
+.sp
+There is also an IRC channel for Mutiny and other projects at \c
+.URL "irc://irc.freenode.net/#mutiny" "" "."
+Please don\(cqt hesitate to message if you need help.
+.SH "LICENSE"
+.sp
+\fBfilesystem\fP is in the public domain.
+.sp
+To the extent possible under law, Kylie McClain <\c
+.MTO "kylie\(atsomas.is" "" ">"
+has waived all copyright and
+related or neighboring rights to this work.
+.sp
+.URL "http://creativecommons.org/publicdomain/zero/1.0/" "" ""
 .SH "NOTES"
 1. devtmpfs does not currently have a manual page, and documentation of it in the kernel is slim. See CONFIG_DEVTMPFS and CONFIG_DEVTMPFS_MOUNT in the kernel configuration to see descriptions of what it does.

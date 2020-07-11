@@ -76,52 +76,155 @@ DESCRIPTION
                    See shells(5).
 
            /home
-               Non-system users' home directories. Usually all non-system
-               users will have a directory under this one as their home
-               directory.
+               Non-system users' home directories. There’s no specified
+               directory structure within this directory, but usually all
+               non-system users will have a directory under this one as their
+               home directory.
 
            /include
                Header files for C and C++ libraries installed by the package
                manager, praxis(7), or through some other system-managed
                method, used by their respective compilers, cc(1) and c++(1).
 
-       /lib
-           Libraries and other non-user-facing executables installed by the
-           package manager, praxis(7), or through some other system-managed
-           method.
+           /lib
+               Libraries and other non-user-facing executables installed by
+               the package manager, praxis(7), or through some other
+               system-managed method.
 
-       TODO(somasis): document the following
+               os-release
+                   File containing metadata about the installed OS.
 
-           │   ├── hostname
-           ├── lib
-           │   └── os-release
-           ├── local
-           │   ├── bin
-           │   ├── include
-           │   ├── lib
-           │   └── share
-           ├── mnt
-           ├── proc
-           ├── run
-           │   └── tmp
-           ├── sbin -> bin
-           ├── share
-           ├── srv
-           ├── sys
-           ├── tmp -> run/tmp
-           ├── usr -> .
-           └── var
-               ├── cache
-               ├── lib
-               ├── log
-               ├── run -> ../run
-               └── tmp
+           /local
+               System administrator-managed prefix. Everything under /local is
+               effectively free reign for the user to add things without them
+               being touched by any system management things; praxis(7) never
+               install anything within here.
+
+           /mnt
+               Mounted filesystems. They may or may not be filesystems mounted
+               from hotpluggable devices.  There’s no specified directory
+               structure within here.
+
+           /proc
+               The mountpoint of a pseudo-filesystem that provides a
+               filesystem interface to some data in the kernel. Most notably,
+               it contains a folder for each process ID on the system.  See
+               proc(5) for more details.
+
+           /run
+               Runtime files. That is, files that pertain to the system since
+               it booted up, in some way; they hold no permanance and are
+               never backed by an actual persistent storage.  It is mounted as
+               a tmpfs(5) filesystem, and exists only in RAM.
+
+               tmp
+                   Various temporary files. This is also mounted as a
+                   secondary tmpfs(5).  The contents of this directory is
+                   visible to all users of the system.
+
+               user
+                   User-specific runtime files.
+
+                   <UID>:
+                       Runtime files which are controlled by the user ID UID.
+                       Each directory is created when the user logs in—see
+                       login(7).  This directory is marked read/write/execute
+                       only for the owner.
+
+       /share
+           Resources of various types, installed on the system by the package
+           manager, praxis(7), or through some other system-managed method.
+
+           man
+               System man(1) pages.  man* directories under this correspond to
+               manual sections.
+
+       /srv
+           Data served by the system. Most commonly, data served by daemons
+           running on the system, like an HTTP daemon, git-daemon(1), and so
+           on.
+
+       /sys
+           The mountpoint of a pseudo-filesystem that provides a filesystem
+           interface to kernel data structures. See sysfs(5).
+
+       /var
+           Persistent, mutable system data. Data that system programs might
+           need sooner or later, and that might change over multiple boots of
+           the system. Things like databases, logs, caches.
+
+           cache
+               Cache files.
+
+           lib
+               Databases and state files.
+
+           log
+               Log files.
+
+           tmp
+               Persistent, yet temporary files. It persists across boots, in
+               contrast to /run/tmp.
+
+   Symbolic links
+       A few symbolic links are used in the file hierarchy so as to facilitate
+       compatibilty with some usually-common locations that Mutiny does not
+       use.
+
+       /sbin
+           A symbolic link to "bin". Mutiny merges a lot of (nowadays)
+           redundant directories.  This one is from the era of Unix when /bin
+           and /sbin were kept separate.
+
+       /tmp
+           A symbolic link to "run/tmp", so as not to disturb applications
+           that expect this to be the temporary filesystem.
+
+       /usr
+           A symbolic link to "." (dot). Mutiny merges a lot of (nowadays)
+           redundant directories.  This one is from the era of Unix when
+           /usr/bin and /bin were kept separate.
+
+       /var/run
+           A symbolic link to "../run". This is a location that has been used
+           in the past for runtime data, in version 2.3 of the Filesystem
+           Hierarchy Standard. In version 3.0, it was deprecated in favor of
+           /run, but suggests a symbolic link be made.
 
 SEE ALSO
-       systemd’s file-hierarchy(7)
+       file-hierarchy(7)
        <https://www.freedesktop.org/software/systemd/man/file-hierarchy.html>
 
-       The Filesystem Hierarchy Standard <https://www.pathname.com/fhs/>
+       Filesystem Hierarchy Standard Group, The Filesystem Hierarchy Standard,
+       version 2.3
+       <https://refspecs.linuxfoundation.org/FHS_2.3/fhs-2.3.html>, January
+       29, 2004.
+
+       LSB Workgroup, The Linux Foundation, The Filesystem Hierarchy Standard,
+       version 3.0
+       <https://refspecs.linuxfoundation.org/FHS_3.0/fhs-3.0.html>, June 3,
+       2015.
+
+       Rob Landley, Understanding the bin, sbin, usr/bin, usr/sbin Split
+       <http://lists.busybox.net/pipermail/busybox/2010-December/074114.html>,
+       December 9, 2010.
+
+CONTRIBUTING
+       The canonical URL of this repository is
+       <https://git.mutiny.red/mutiny/filesystem>.  Submit patches and bugs to
+       < <kylie@somas.is>>.
+
+       There is also an IRC channel for Mutiny and other projects at
+       <irc://irc.freenode.net/#mutiny>.  Please don’t hesitate to message if
+       you need help.
+
+LICENSE
+       filesystem is in the public domain.
+
+       To the extent possible under law, Kylie McClain < <kylie@somas.is>> has
+       waived all copyright and related or neighboring rights to this work.
+
+        <http://creativecommons.org/publicdomain/zero/1.0/>
 
 NOTES
        1. devtmpfs does not currently have a manual page, and documentation of
@@ -130,4 +233,4 @@ NOTES
 
 
 
-Mutiny                            2020-06-09                           HIER(7)
+Mutiny                            2020-07-11                           HIER(7)
