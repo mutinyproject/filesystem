@@ -92,16 +92,25 @@ _/_::
         There's no specified directory structure within here.
 
     _/proc_:::
-        The mountpoint of a pseudo-filesystem that provides a filesystem interface for some data in
+        The mountpoint of a pseudo-filesystem that provides a filesystem interface to _some_ data in
         the kernel. Most notably, it contains a folder for each process ID on the system.
         See proc(5) for more details.
 
+    _/run_:::
+        Runtime files. That is, files that pertain to the system since it booted up, in some way;
+        they hold no permanance and are never backed by an actual persistent storage.
+        It is mounted as a tmpfs(5) filesystem, and exists only in RAM.
+
+        _tmp_::::           Various temporary files. This is also mounted as a secondary tmpfs(5).
+                            The contents of this directory is visible to all users of the system.
+
+        _user_::::          User-specific runtime files.
+
+            _<UID>_:::::    Runtime files which are controlled by the user ID _UID_.
+                            Each directory is created when the user logs in--see login(7).
+                            This directory is marked read/write/execute only for the owner.
+
 // TODO(somasis): Document the following:
-// ----
-// ├── run                     - Runtime files. (tmpfs, directory structure created at boot)
-// │   ├── tmp                 - Temporary files. (cleared at boot)
-// │   └── user                - User runtime files.
-// │       └── 1000            - User's `$XDG_RUNTIME_DIR`. (created at login)
 // │           └── commune     - User's supervision trees, maintained by `commune` scopes.
 // │               ├── snooze  - Corresponds to the running supervision tree for user's jobs.
 // │               │             Maintained by `commune-snooze`.
@@ -109,31 +118,77 @@ _/_::
 // │               │             Maintained by `commune-user`.
 // │               └── xinit   - Corresponds to the running supervision tree for the user's Xorg
 // │                             session. Maintained by `commune-xinit`.
-// │
-// ├── share                   - Managed resource files.
-// │   └── man                 - System manual pages.
-// │
-// ├── srv                     - Service directories. (git-daemon, httpd)
-// │   ├── git
-// │   └── http
-// │
-// ├── sys                     - System/kernel information. (sysfs)
-// ├── tmp                     - Symbolic link to `run/tmp`.
-// ├── usr                     - Symbolic link to `.`.
-// └── var                     - Persistent system data.
-//     ├── cache               - Cache for system programs.
-//     │   └── praxis
-//     │       └── distfiles   - Downloaded source for packages.
-//     │
-//     ├── lib                 - Log files for system programs.
-//     ├── log                 - Databases and other data for system programs.
-//     ├── run                 - Symbolic link to `../run`.
-//     └── tmp                 - Persistent yet temporary files, not cleared at boot.
-// ----
+
+    _/share_:::
+        Resources of various types, installed on the system by the package manager,
+        <<praxis.7.adoc#,praxis(7)>>, or through some other system-managed method.
+
+        _man_::::           System man(1) pages.
+                            `man*` directories under this correspond to manual sections.
+
+    _/srv_:::
+        Data served by the system. Most commonly, data served by daemons running on the system,
+        like an HTTP daemon, git-daemon(1), and so on.
+
+    _/sys_:::
+        The mountpoint of a pseudo-filesystem that provides a filesystem interface to kernel data
+        structures. See sysfs(5).
+
+    _/var_:::
+        Persistent, mutable system data. Data that system programs might need sooner or later, and
+        that might change over multiple boots of the system. Things like databases, logs, caches.
+
+        _cache_::::         Cache files.
+
+        _lib_::::           Databases and state files.
+
+        _log_::::           Log files.
+
+        _tmp_::::           Persistent, yet temporary files. It persists across boots, in contrast
+                            to _/run/tmp_.
+
+// TODO(somasis): Document the following:
+// var                     - Persistent system data.
+// ├── cache               - Cache for system programs.
+// │   └── praxis
+// │       └── distfiles   - Downloaded source for packages.
+
+=== Symbolic links
+
+A few symbolic links are used in the file hierarchy so as to facilitate compatibilty with some
+usually-common locations that Mutiny does not use.
+
+_/sbin_::
+    A symbolic link to "_bin_". Mutiny merges a lot of (nowadays) redundant directories.
+    This one is from the era of Unix when _/bin_ and _/sbin_ were kept separate.
+
+_/tmp_::
+    A symbolic link to "_run/tmp_", so as not to disturb applications that expect this to be the
+    temporary filesystem.
+
+_/usr_::
+    A symbolic link to "_._" (dot). Mutiny merges a lot of (nowadays) redundant directories.
+    This one is from the era of Unix when _/usr/bin_ and _/bin_ were kept separate.
+
+_/var/run_::
+    A symbolic link to "_../run_". This is a location that has been used in the past for runtime
+    data, in version 2.3 of the Filesystem Hierarchy Standard. In version 3.0, it was deprecated in
+    favor of _/run_, but suggests a symbolic link be made.
 
 == See also
 
-https://www.freedesktop.org/software/systemd/man/file-hierarchy.html[systemd's file-hierarchy(7)]
+:fhsv23: https://refspecs.linuxfoundation.org/FHS_2.3/fhs-2.3.html
+:fhsv30: https://refspecs.linuxfoundation.org/FHS_3.0/fhs-3.0.html
+:usrsplit: http://lists.busybox.net/pipermail/busybox/2010-December/074114.html
 
-https://www.pathname.com/fhs/[The Filesystem Hierarchy Standard]
+https://www.freedesktop.org/software/systemd/man/file-hierarchy.html[file-hierarchy(7)]
 
+Filesystem Hierarchy Standard Group, {fhsv23}[_The Filesystem Hierarchy Standard, version 2.3_],
+January 29, 2004.
+
+LSB Workgroup, The Linux Foundation, {fhsv30}[_The Filesystem Hierarchy Standard, version 3.0_],
+June 3, 2015.
+
+Rob Landley, {usrsplit}[_Understanding the bin, sbin, usr/bin, usr/sbin Split_], December 9, 2010.
+
+include::footer.adoc[]
