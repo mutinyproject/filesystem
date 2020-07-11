@@ -76,22 +76,22 @@ _/_::
         <<praxis.7.adoc#,praxis(7)>>, or through some other system-managed method, used by their
         respective compilers, cc(1) and c{pp}(1).
 
-    _/lib_::
+    _/lib_:::
         Libraries and other non-user-facing executables installed by the package manager, praxis(7),
         or through some other system-managed method.
 
         _os-release_::::    File containing metadata about the installed OS.
 
-    _/local_::
+    _/local_:::
         System administrator-managed prefix. Everything under /local is effectively free reign for
         the user to add things without them being touched by any system management things;
         <<praxis.7.adoc#,praxis(7)>> never install anything within here.
 
-    _/mnt_::
+    _/mnt_:::
         Mounted filesystems. They may or may not be filesystems mounted from hotpluggable devices.
         There's no specified directory structure within here.
 
-    _/proc_::
+    _/proc_:::
         The mountpoint of a pseudo-filesystem that provides a filesystem interface for some data in
         the kernel. Most notably, it contains a folder for each process ID on the system.
         See proc(5) for more details.
